@@ -9,6 +9,12 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def api_get_users():
     return jsonify(get_users())
 
+@app.route('/get_users', methods=['GET'])
+@app.route('/api/get_users', methods=['GET'])
+def api_get_user_names():
+    # return only the names of all users in the database
+    return jsonify([user["name"] for user in get_users()])
+
 @app.route('/api/users/<user_id>', methods=['GET'])
 
 def api_get_user(user_id):
@@ -32,4 +38,4 @@ if __name__ == "__main__":
     #app.debug = True
     #app.run(debug=True)
     create_db_table()
-    app.run() #run app
+    app.run(host="0.0.0.0", port=3000) #run app on port 3000 (0.0.0.0 so it is reachable from outside the container)
